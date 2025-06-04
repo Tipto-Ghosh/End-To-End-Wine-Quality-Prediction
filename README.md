@@ -35,11 +35,31 @@ git clone https://github.com/Tipto-Ghosh/End-To-End-Wine-Quality-Prediction
 cd End-To-End-Wine-Quality-Prediction
 ````
 
+## ⚠️ Python Version Warning
+
+> **⚠️ IMPORTANT:**  
+> This project requires **Python 3.11.4**.  
+> Do **NOT** use Python 3.12 or 3.13, as many dependencies are **not yet compatible** or may fail during installation.
+
+
 #### 🐍 STEP 02 - Create a Conda Environment
 
 ```bash
-conda create -n mlproj python=3.8 -y
+conda create -n mlproj python=3.11.4 -y
 conda activate mlproj
+```
+#### ✅ If you are using venv (standard Python):
+```bash
+python -m venv mlproj
+```
+##### Activate the environment
+###### One Windows
+```bash
+mlproj\Scripts\activate
+```
+###### On macOS/Linux:
+```bash
+source mlproj/bin/activate
 ```
 
 #### 📦 STEP 03 - Install the Requirements
