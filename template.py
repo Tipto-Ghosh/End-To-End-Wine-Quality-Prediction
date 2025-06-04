@@ -28,7 +28,7 @@ list_of_files = [
     "requirements.txt",
     "setup.py",
     "research/find_issues_in_data.ipynp",
-    "research/fixinf_issues_in_data.ipynp",
+    "research/fixing_issues_in_data.ipynp",
     "research/EDA.ipynp",
     "templates/index.html"
 ]
