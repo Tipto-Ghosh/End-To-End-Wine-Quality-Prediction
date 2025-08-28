@@ -48,6 +48,7 @@ list_of_files = [
     
     "requirements.txt",
     "setup.py",
+    ".env",
     
     "static/css/style.css",
     "templates/index.html",
