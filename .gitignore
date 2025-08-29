@@ -207,3 +207,8 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+
+# Ignore artifacts
+artifacts/
+artifacts/*
