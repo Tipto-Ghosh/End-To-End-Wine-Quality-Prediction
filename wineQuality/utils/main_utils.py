@@ -6,8 +6,8 @@ import dill
 import yaml
 from pandas import DataFrame
 import pandas as pd 
-from mushroomGuard.exception import MushroomException 
-from mushroomGuard.logger import logging
+from wineQuality.logger import logging
+from wineQuality.exception import WineException
 
 
 def read_csv(file_path: str) -> DataFrame:
@@ -21,7 +21,7 @@ def read_csv(file_path: str) -> DataFrame:
         DataFrame: Pandas DataFrame containing the data from the CSV file.
 
     Raises:
-        MushroomException: If reading the CSV file fails.
+        WineException: If reading the CSV file fails.
     """
     logging.info(f"Entered read_csv with file_path={file_path}")
     try:
@@ -30,7 +30,7 @@ def read_csv(file_path: str) -> DataFrame:
         return df
     except Exception as e:
         logging.error(f"Error occurred while reading CSV file: {file_path}")
-        raise MushroomException(e, sys) from e
+        raise WineException(e, sys)  
     
 
 def read_yaml_file(file_path: str) -> dict:
@@ -44,7 +44,7 @@ def read_yaml_file(file_path: str) -> dict:
         dict: Parsed content of the YAML file.
 
     Raises:
-        MushroomException: If reading the YAML file fails.
+        WineException: If reading the YAML file fails.
     """
     
     logging.info(f"Entered read_yaml_file with file_path={file_path}")
@@ -55,7 +55,7 @@ def read_yaml_file(file_path: str) -> dict:
         return data
     except Exception as e:
         logging.error(f"Error occurred while reading YAML file: {file_path}")
-        raise MushroomException(e, sys) from e
+        raise WineException(e, sys)  
     
 
 def write_yaml_file(file_path: str, content: object, replace: bool = False) -> None:
@@ -68,7 +68,7 @@ def write_yaml_file(file_path: str, content: object, replace: bool = False) -> N
         replace (bool, optional): Whether to replace an existing file. Defaults to False.
 
     Raises:
-        MushroomException: If writing the YAML file fails.
+        WineException: If writing the YAML file fails.
     """
     
     logging.info(f"Entered write_yaml_file with file_path={file_path}, replace={replace}")
@@ -82,7 +82,7 @@ def write_yaml_file(file_path: str, content: object, replace: bool = False) -> N
         logging.info(f"YAML file written successfully: {file_path}")
     except Exception as e:
         logging.error(f"Error occurred while writing YAML file: {file_path}")
-        raise MushroomException(e, sys) from e
+        raise WineException(e, sys)  
     
 
 def save_object(file_path: str, obj: object) -> None:
@@ -94,7 +94,7 @@ def save_object(file_path: str, obj: object) -> None:
         obj (object): Python object to save.
 
     Raises:
-        MushroomException: If saving the object fails.
+        WineException: If saving the object fails.
     """
     
     logging.info(f"Entered save_object with file_path={file_path}")
@@ -105,7 +105,7 @@ def save_object(file_path: str, obj: object) -> None:
         logging.info(f"Object saved successfully at: {file_path}")
     except Exception as e:
         logging.error(f"Error occurred while saving object: {file_path}")
-        raise MushroomException(e, sys) from e
+        raise WineException(e, sys)  
         
 
 def load_object(file_path: str) -> object:
@@ -119,7 +119,7 @@ def load_object(file_path: str) -> object:
         object: Loaded Python object.
 
     Raises:
-        MushroomException: If loading the object fails.
+        WineException: If loading the object fails.
     """
     
     logging.info(f"Entered load_object with file_path={file_path}")
@@ -130,7 +130,7 @@ def load_object(file_path: str) -> object:
         return obj
     except Exception as e:
         logging.error(f"Error occurred while loading object: {file_path}")
-        raise MushroomException(e, sys) from e
+        raise WineException(e, sys)  
         
 
 def save_numpy_array_data(file_path: str, array: np.array):
@@ -142,7 +142,7 @@ def save_numpy_array_data(file_path: str, array: np.array):
         array (np.ndarray): NumPy array to save.
 
     Raises:
-        MushroomException: If saving the array fails.
+        WineException: If saving the array fails.
     """
     
     logging.info(f"Entered save_numpy_array_data with file_path={file_path}, array_shape={array.shape}")
@@ -155,7 +155,7 @@ def save_numpy_array_data(file_path: str, array: np.array):
         logging.info(f"NumPy array saved successfully at: {file_path}")
     except Exception as e:
         logging.error(f"Error occurred while saving numpy array: {file_path}")
-        raise MushroomException(e, sys) from e
+        raise WineException(e, sys)  
     
 
 def load_numpy_array_data(file_path: str) -> np.array:
@@ -169,7 +169,7 @@ def load_numpy_array_data(file_path: str) -> np.array:
         np.ndarray: Loaded NumPy array.
 
     Raises:
-        MushroomException: If loading the array fails.
+        WineException: If loading the array fails.
     """
     
     logging.info(f"Entered load_numpy_array_data with file_path={file_path}")
@@ -180,7 +180,7 @@ def load_numpy_array_data(file_path: str) -> np.array:
         return array
     except Exception as e:
         logging.error(f"Error occurred while loading numpy array: {file_path}")
-        raise MushroomException(e, sys) from e
+        raise WineException(e, sys)  
     
 
 def drop_columns(df: DataFrame, cols: list)-> DataFrame:
@@ -195,7 +195,7 @@ def drop_columns(df: DataFrame, cols: list)-> DataFrame:
         DataFrame: DataFrame with specified columns removed.
 
     Raises:
-        MushroomException: If dropping columns fails.
+        WineException: If dropping columns fails.
     """
     
     logging.info(f"Entered drop_columns with cols={cols}")
@@ -205,7 +205,7 @@ def drop_columns(df: DataFrame, cols: list)-> DataFrame:
         return df
     except Exception as e:
         logging.error(f"Error occurred while dropping columns: {cols}")
-        raise MushroomException(e, sys) from e
+        raise WineException(e, sys)  
     
 
 def save_yaml_file(file_path: str, data: dict):
@@ -217,7 +217,7 @@ def save_yaml_file(file_path: str, data: dict):
         data (dict): Dictionary data to save.
 
     Raises:
-        MushroomException: If saving the YAML file fails.
+        WineException: If saving the YAML file fails.
     """
     logging.info(f"Entered save_yaml_file with file_path={file_path}")
     try:
@@ -229,4 +229,26 @@ def save_yaml_file(file_path: str, data: dict):
         logging.info(f"YAML file saved successfully: {file_path}")
     except Exception as e:
         logging.error(f"Error occurred while saving YAML file: {file_path}")
-        raise MushroomException(e, sys) from e
+        raise WineException(e, sys)  
+
+def save_csv_file(file_path: str, data: pd.DataFrame):
+    """
+    Save a pandas DataFrame to a CSV file.
+
+    Args:
+        file_path (str): Path where the CSV file should be saved.
+        data (pd.DataFrame): DataFrame to save.
+
+    Raises:
+        WineException: If saving the CSV file fails.
+    """
+    logging.info(f"Entered save_csv_file with file_path={file_path}")
+    try:
+        dir_path = os.path.dirname(file_path)
+        if dir_path:
+            os.makedirs(dir_path, exist_ok=True)
+        data.to_csv(file_path, index=False)
+        logging.info(f"CSV file saved successfully: {file_path}")
+    except Exception as e:
+        logging.error(f"Error occurred while saving CSV file: {file_path}")
+        raise WineException(e, sys)  
