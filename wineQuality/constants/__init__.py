@@ -18,7 +18,7 @@ RAW_DATA_FILE_NAME : str = "wine.csv"
 PIPELINE_NAME : str = "wineQuality"
 
 
-ARTIFACT_DIR : str = "artifact"
+ARTIFACT_DIR : str = "artifacts"
 
 TRAIN_FILE_NAME : str = "train.csv"
 TEST_FILE_NAME : str = "test.csv"
