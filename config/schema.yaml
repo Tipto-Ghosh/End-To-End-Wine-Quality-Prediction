@@ -1,0 +1,31 @@
+columns:
+  wine type: category
+  fixed acidity: float
+  volatile acidity: float
+  citric acid: float
+  residual sugar: float
+  chlorides: float
+  free sulfur dioxide: float
+  total sulfur dioxide: float
+  density: float
+  pH: float
+  sulphates: float
+  alcohol: float
+  quality: int
+
+numerical_columns:
+  fixed acidity: float
+  volatile acidity: float
+  citric acid: float
+  residual sugar: float
+  chlorides: float
+  free sulfur dioxide: float
+  total sulfur dioxide: float
+  density: float
+  pH: float
+  sulphates: float
+  alcohol: float
+  quality: int
+
+categorical_columns:
+  wine type: category
