@@ -18,7 +18,7 @@ from wineQuality.entity.artifact_entity import DataTransformationArtifact , Data
 
 from wineQuality.utils.main_utils import save_object , save_numpy_array_data , read_csv , read_yaml_file , drop_columns
 from wineQuality.entity.estimator import TargetValueMapping
-
+from collections import Counter
 
 
 
@@ -146,8 +146,8 @@ class DataTransformation:
                 logging.info(f"for test_df quality is converted into: [{test_df[TARGET_COLUMN].unique()}]") 
                 
                 
-                logging.info(f"from initiate_data_transformation method: train_df shape [{train_df.shape}]")
-                logging.info(f"from initiate_data_transformation method: test_df shape [{test_df.shape}]")
+                logging.info(f"from initiate_data_transformation method: train_df shape before cleaning [{train_df.shape}]")
+                logging.info(f"from initiate_data_transformation method: test_df shape before cleaning[{test_df.shape}]")
                 
                 # do the data cleaning part
                 logging.info("Data cleaning part started for train_df")
@@ -158,9 +158,9 @@ class DataTransformation:
                 test_df = self.get_cleaned_data(test_df)
                 logging.info("Data Cleaning done for test_df")
                 
-                # get the preprocessor object
-                preprocessor = self.get_data_transformation_object()
-                logging.info("Got the preprocessor object")
+                logging.info(f"from initiate_data_transformation method: train_df shape before cleaning [{train_df.shape}]")
+                logging.info(f"from initiate_data_transformation method: test_df shape before cleaning[{test_df.shape}]")
+                
                 
                 # separete target columns and input features[X , y]
                 input_feature_train_df = train_df.drop(columns = [TARGET_COLUMN] , axis = 1)
@@ -171,6 +171,13 @@ class DataTransformation:
                 input_feature_test_df = test_df.drop(columns = [TARGET_COLUMN] , axis = 1)
                 target_feature_test_df = test_df[TARGET_COLUMN]
                 logging.info("Separeting X and y from test dataframe")
+                
+                
+                # get the preprocessor object
+                preprocessor = self.get_data_transformation_object()
+                logging.info("Got the preprocessor object")
+                
+                
                 
                 # do the fit_transform on train data
                 logging.info("Applying preprocessing object on training dataframe and testing dataframe")
@@ -191,6 +198,8 @@ class DataTransformation:
                     input_feature_train_arr , target_feature_train_df
                 )
                 logging.info("Applied SMOTEENN on training dataset")
+                
+                logging.info(f"After solving imbalance issue: y count in train data: {Counter(target_feature_train_df)}")
             
                 logging.info("Created train array and test array")
                     

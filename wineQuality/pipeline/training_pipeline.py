@@ -8,19 +8,19 @@ from wineQuality.exception import WineException
 
 
 from wineQuality.entity.config_entity import (
-    DataIngestionConfig , DataValidationConfig , DataTransformationConfig
+    DataIngestionConfig , DataValidationConfig , DataTransformationConfig , ModelTrainerConfig
 )
  
 
 from wineQuality.entity.artifact_entity import (
-    DataIngestionArtifact , DataValidationArtifact , DataTransformationArtifact
+    DataIngestionArtifact , DataValidationArtifact , DataTransformationArtifact , ModelTrainerArtifact
 )
  
 
 from wineQuality.components.data_ingestion import DataIngestion
 from wineQuality.components.data_validation import DataValidation
 from wineQuality.components.data_transformation import DataTransformation
-
+from wineQuality.components.model_trainer import ModelTrainer
 
 
 class TrainingPipeline:
@@ -36,6 +36,10 @@ class TrainingPipeline:
         
         # 3. do the data transformation
         self.data_transformation_config = DataTransformationConfig()
+        
+        # 4. do the model training
+        self.model_trainer_config = ModelTrainerConfig()
+        
     
     def start_data_ingestion(self) -> DataIngestionArtifact:
         """ 
@@ -98,6 +102,22 @@ class TrainingPipeline:
             return data_transformation_artifact
         except Exception as e:
             raise WineException(e , sys)    
+    
+    def start_model_trainer(self , data_transformation_artifact: DataTransformationArtifact) -> ModelTrainerArtifact:
+        """
+        This method of TrainPipeline class is responsible for starting model training
+        """
+        try:
+            model_trainer = ModelTrainer(
+                model_trainer_config = self.model_trainer_config,
+                data_transformation_artifact = data_transformation_artifact
+            ) 
+            
+            model_trainer_artifact = model_trainer.initiate_model_trainer()
+            return model_trainer_artifact
+        
+        except Exception as e:
+            raise WineException(e , sys)
         
     def run_training_pipeline(self , ) -> None:
         """ 
@@ -117,6 +137,9 @@ class TrainingPipeline:
            data_transformation_artifact = self.start_data_transformation(data_validation_artifact = data_validation_artifact)
            logging.info("Data transformation is Done!!")
            
+           # 4. Run the model trainer
+           model_trainer_artifact = self.start_model_trainer(data_transformation_artifact = data_transformation_artifact)
+           logging.info("Model Trainer Completed")
            
         except Exception as e:
             raise WineException(e , sys)    

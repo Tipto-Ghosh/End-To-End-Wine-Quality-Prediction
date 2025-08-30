@@ -56,3 +56,22 @@ class DataTransformationConfig:
     transformed_object_file_path : str = os.path.join(
         data_transformation_dir , DATA_TRANSFORMATION_PREPROCESSOR_OBJECT_DIR , PREPROCESSOR_OBJECT_FILE_NAME 
     )
+
+
+@dataclass
+class ModelTrainerConfig:
+    # artifact/timestamp/model_trainer
+    model_trainer_dir : str = os.path.join(training_pipeline_config.artifact_dir , MODEL_TRAINER_DIR_NAME)
+    # artifact/timestamp/model_trainer/trained_model/model.pkl
+    trained_model_file_path : str = os.path.join(
+        model_trainer_dir , MODEL_TRAINER_TRAINED_MODEL_DIR , MODEL_TRAINER_TRAINED_MODEL_NAME
+    )
+    expected_accuracy : float = MODEL_TRAINER_EXPECTED_SCORE
+    model_config_file_path : str = MODEL_TRAINER_MODEL_CONFIG_FILE_PATH
+    
+    # directory to store all tuned model reports
+    # artifact/timestamp/model_trainer/"all_model_report"/"all_tuned_model_report.yaml" 
+    all_models_report_file_path : str = os.path.join(
+        model_trainer_dir , MODEL_TRAINER_ALL_MODEL_REPORT_DIR , MODEL_TRAINER_ALL_TUNED_MODEL_REPORT_FILE_PATH
+    )
+
