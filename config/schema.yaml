@@ -1,3 +1,4 @@
+# column infomations for data validation
 columns:
   wine type: category
   fixed acidity: float
@@ -29,3 +30,31 @@ numerical_columns:
 
 categorical_columns:
   wine type: category
+
+
+
+# schema for data transformation
+
+# list of columns that need to drop
+drop_columns:
+  - wine type
+  - fixed acidity
+  - density
+  - pH 
+  - sulphates
+
+# list of columns where we have to apply log transformation
+log_transformation:
+  - volatile acidity
+  - residual sugar
+  - chlorides
+
+# list of columns where we have to apply sqrt transformation
+sqrt_transformation:
+  - free sulfur dioxide
+
+# list of columns where we have to apply only standard scaler
+other_columns:
+  - citric acid
+  - total sulfur dioxide
+  - alcohol

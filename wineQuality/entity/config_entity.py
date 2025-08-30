@@ -35,3 +35,24 @@ class DataValidationConfig:
     data_validation_dir : str = os.path.join(training_pipeline_config.artifact_dir , DATA_VALIDATION_DIR_NAME)
     # artifact/timestamp/data_validation/drift_report/report.yaml
     data_drift_file_path : str = os.path.join(data_validation_dir , DATA_VALIDATION_DRIFT_REPORT_DIR , DATA_VALIDATION_DRIFT_REPORT_FILE_NAME)
+
+
+
+@dataclass
+class DataTransformationConfig:
+    # artifact/timestamp/data_transformation/
+    data_transformation_dir : str = os.path.join(training_pipeline_config.artifact_dir , DATA_TRANSFORMATION_DIR_NAME)
+    # artifact/timestamp/data_transformation/transformed_data/train.npy
+    transformed_train_data_file_path : str = os.path.join(
+        data_transformation_dir , DATA_TRANSFORMATION_TRANSFORMED_DATA_DIR , 
+        TRAIN_FILE_NAME.replace("csv" , "npy")
+    )
+    # artifact/timestamp/data_transformation/transformed_data/test.npy
+    transformed_test_data_file_path : str = os.path.join(
+        data_transformation_dir , DATA_TRANSFORMATION_TRANSFORMED_DATA_DIR , 
+        TEST_FILE_NAME.replace("csv" , "npy")
+    )
+    # artifact/timestamp/data_transformation/transformed_object/preprocessor.pkl
+    transformed_object_file_path : str = os.path.join(
+        data_transformation_dir , DATA_TRANSFORMATION_PREPROCESSOR_OBJECT_DIR , PREPROCESSOR_OBJECT_FILE_NAME 
+    )

@@ -1,7 +1,8 @@
 import os 
 import sys 
 import json
-
+import warnings
+warnings.filterwarnings("ignore")
 from pandas import DataFrame
 from evidently.model_profile import Profile
 from evidently.profile_sections import  DataDriftProfileSection
