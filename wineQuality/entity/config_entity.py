@@ -88,3 +88,8 @@ class ModelEvaluationConfig:
 class ModelPusherConfig:
     production_model_path : str = PRODUCTION_MODEL_PATH
     preprocessor_file_path : str = PRODUCTION_PREPROCESSOR_PATH
+
+@dataclass
+class WineQualityPredictionConfig:
+    model_file_path : str = PRODUCTION_MODEL_PATH
+    preprocessor_file_path : str = PRODUCTION_PREPROCESSOR_PATH

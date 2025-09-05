@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>🍷 Wine Quality Predictor | AI-Powered Classification</title>
+  <meta name="description" content="Predict wine quality category (Standard or Premium) using AI models. Input chemical properties and type for accurate classification.">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="static/css/style.css">
+</head>
+<body>
+
+<div class="container mt-5 content">
+  <h1 class="text-center mb-4">
+    <i class="fas fa-wine-bottle me-3"></i>
+    Wine Quality Predictor
+  </h1>
+  <p class="text-center text-muted mb-5">
+    <i class="fas fa-flask me-2"></i>
+    Predict whether a wine is Standard or Premium based on chemical properties
+  </p>
+
+  <form method="POST" action="/" id="wineForm">
+    <div class="row g-4 mb-3">
+      <div class="col-md-4">
+        <label for="wine_type" class="form-label"><i class="fas fa-tint me-2"></i>Wine Type</label>
+        <select class="form-control form-select" name="wine_type" id="wine_type" required>
+          <option disabled selected>Select type</option>
+          <option value="red">🍷 Red</option>
+          <option value="white">🥂 White</option>
+        </select>
+      </div>
+      <div class="col-md-4">
+        <label for="fixed_acidity" class="form-label">Fixed Acidity</label>
+        <input type="number" class="form-control" name="fixed_acidity" id="fixed_acidity" value="7.0" step="0.01" required>
+      </div>
+      <div class="col-md-4">
+        <label for="volatile_acidity" class="form-label">Volatile Acidity</label>
+        <input type="number" class="form-control" name="volatile_acidity" id="volatile_acidity" value="0.3" step="0.01" required>
+      </div>
+    </div>
+
+    <div class="row g-4 mb-3">
+      <div class="col-md-3">
+        <label for="citric_acid" class="form-label">Citric Acid</label>
+        <input type="number" class="form-control" name="citric_acid" id="citric_acid" value="0.3" step="0.01" required>
+      </div>
+      <div class="col-md-3">
+        <label for="residual_sugar" class="form-label">Residual Sugar</label>
+        <input type="number" class="form-control" name="residual_sugar" id="residual_sugar" value="2.0" step="0.01" required>
+      </div>
+      <div class="col-md-3">
+        <label for="chlorides" class="form-label">Chlorides</label>
+        <input type="number" class="form-control" name="chlorides" id="chlorides" value="0.05" step="0.001" required>
+      </div>
+      <div class="col-md-3">
+        <label for="free_sulfur_dioxide" class="form-label">Free Sulfur Dioxide</label>
+        <input type="number" class="form-control" name="free_sulfur_dioxide" id="free_sulfur_dioxide" value="15.0" step="1" required>
+      </div>
+    </div>
+
+    <div class="row g-4 mb-3">
+      <div class="col-md-3">
+        <label for="total_sulfur_dioxide" class="form-label">Total Sulfur Dioxide</label>
+        <input type="number" class="form-control" name="total_sulfur_dioxide" id="total_sulfur_dioxide" value="46.0" step="1" required>
+      </div>
+      <div class="col-md-3">
+        <label for="density" class="form-label">Density</label>
+        <input type="number" class="form-control" name="density" id="density" value="0.998" step="0.00001" required>
+      </div>
+      <div class="col-md-3">
+        <label for="pH" class="form-label">pH</label>
+        <input type="number" class="form-control" name="pH" id="pH" value="3.3" step="0.01" required>
+      </div>
+      <div class="col-md-3">
+        <label for="sulphates" class="form-label">Sulphates</label>
+        <input type="number" class="form-control" name="sulphates" id="sulphates" value="0.5" step="0.01" required>
+      </div>
+    </div>
+
+    <div class="row g-4 mb-3">
+      <div class="col-md-6">
+        <label for="alcohol" class="form-label">Alcohol</label>
+        <input type="number" class="form-control" name="alcohol" id="alcohol" value="9.0" step="0.01" required>
+      </div>
+    </div>
+
+    <div class="d-grid gap-2 mt-4">
+      <button type="submit" class="btn btn-primary btn-lg" id="predictBtn">
+        <i class="fas fa-magic me-2"></i> Predict Wine Quality
+      </button>
+    </div>
+  </form>
+
+  <div class="card mt-4 result-card" id="resultCard" style="display:none;">
+    <div class="card-body text-center">
+      <h4 class="card-title"><i class="fas fa-chart-bar me-2"></i> Predicted Wine Category</h4>
+      <h2 class="text-success mb-3" id="predicted-category">--</h2>
+      <p class="text-muted mb-0">
+        <i class="fas fa-info-circle me-1"></i> Prediction based on AI analysis of wine chemical properties
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const form = document.getElementById('wineForm');
+  const predictBtn = document.getElementById('predictBtn');
+  const resultCard = document.getElementById('resultCard');
+  const predictedCategory = document.getElementById('predicted-category');
+
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    // Show loading state
+    predictBtn.disabled = true;
+    predictBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i> Predicting...';
+
+    // Fetch prediction from server (implement POST API in Flask/FastAPI/Django)
+    const formData = new FormData(form);
+    fetch("/", { method: "POST", body: formData })
+      .then(response => response.json())
+      .then(data => {
+        predictedCategory.textContent = data.prediction;
+        resultCard.style.display = 'block';
+        predictBtn.disabled = false;
+        predictBtn.innerHTML = '<i class="fas fa-magic me-2"></i> Predict Wine Quality';
+        resultCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      });
+  });
+});
+</script>
+</body>
+</html>
