@@ -56,7 +56,7 @@ DATA_TRANSFORMATION_PREPROCESSOR_OBJECT_DIR : str = "transformed_object"
 MODEL_TRAINER_DIR_NAME : str = "model_trainer"
 # trained model path
 MODEL_TRAINER_TRAINED_MODEL_DIR : str = "trained_model"
-MODEL_TRAINER_TRAINED_MODEL_NAME : str = MODEL_FILE_NAME
+MODEL_TRAINER_TRAINED_MODEL_NAME : str = "recent_trained_model.pkl"
 # Path to model.yaml
 MODEL_TRAINER_MODEL_CONFIG_FILE_PATH : str = os.path.join("config" , "params.yaml")
 MODEL_TRAINER_EXPECTED_SCORE : float = 0.75 # minimal accuracy score for classification
@@ -65,3 +65,8 @@ MODEL_TRAINER_EXPECTED_SCORE : float = 0.75 # minimal accuracy score for classif
 MODEL_TRAINER_ALL_MODEL_REPORT_DIR: str = "all_model_report"
 # File path where all tuned models' details will be saved
 MODEL_TRAINER_ALL_TUNED_MODEL_REPORT_FILE_PATH: str = "all_tuned_model_report.yaml" 
+
+
+# Model Evaluation related constants
+PRODUCTION_MODEL_PATH : str = os.path.join("production" , MODEL_FILE_NAME)
+PRODUCTION_PREPROCESSOR_PATH : str = os.path.join("production" , PREPROCESSOR_OBJECT_FILE_NAME)

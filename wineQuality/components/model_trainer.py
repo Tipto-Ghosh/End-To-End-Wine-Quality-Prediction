@@ -14,7 +14,7 @@ from wineQuality.exception import WineException
 from wineQuality.entity.config_entity import ModelTrainerConfig
 from wineQuality.entity.artifact_entity import ModelTrainerArtifact , DataTransformationArtifact , ClassificationMetricArtifact
 from wineQuality.entity.estimator import WineQualityEstimator
-from wineQuality.utils.main_utils import load_numpy_array_data , load_object
+from wineQuality.utils.main_utils import load_numpy_array_data , load_object , save_object
 
 class ModelTrainer:
     def __init__(self , model_trainer_config: ModelTrainerConfig , data_transformation_artifact: DataTransformationArtifact):
@@ -133,6 +133,9 @@ class ModelTrainer:
                 preprocessing_object = preprocessing_object , trained_model_object = best_model_detail.best_model
             )
             logging.info("saving WineQualityEstimator(preprocessing_object + best_model_detail.best_model)")
+            save_object(
+                file_path = self.model_trainer_config.trained_model_file_path , obj = best_model_detail.best_model
+            )
             
             # 6. construct the model trainer artifact
             model_trainer_artifact = ModelTrainerArtifact(
@@ -141,6 +144,6 @@ class ModelTrainer:
                 tuned_model_report_file_path = self.model_trainer_config.all_models_report_file_path
             )
             # 7. return the model trainer artifact
-            return model_trainer_artifact
+            return (model_trainer_artifact , wineQualityEstimator)
         except Exception as e:
             raise WineException(e , sys)

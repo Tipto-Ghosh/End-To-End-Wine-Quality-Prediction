@@ -75,3 +75,16 @@ class ModelTrainerConfig:
         model_trainer_dir , MODEL_TRAINER_ALL_MODEL_REPORT_DIR , MODEL_TRAINER_ALL_TUNED_MODEL_REPORT_FILE_PATH
     )
 
+# production model 
+@dataclass
+class ModelEvaluationConfig:
+    # production/model.pkl
+    production_model_path : str = PRODUCTION_MODEL_PATH
+    # at least this much improvement is required to accept a model
+    model_evaluation_threshold : float = 0.01
+
+
+@dataclass
+class ModelPusherConfig:
+    production_model_path : str = PRODUCTION_MODEL_PATH
+    preprocessor_file_path : str = PRODUCTION_PREPROCESSOR_PATH

@@ -8,12 +8,12 @@ from wineQuality.exception import WineException
 
 
 from wineQuality.entity.config_entity import (
-    DataIngestionConfig , DataValidationConfig , DataTransformationConfig , ModelTrainerConfig
+    DataIngestionConfig , DataValidationConfig , DataTransformationConfig , ModelTrainerConfig , ModelEvaluationConfig , ModelPusherConfig
 )
  
 
 from wineQuality.entity.artifact_entity import (
-    DataIngestionArtifact , DataValidationArtifact , DataTransformationArtifact , ModelTrainerArtifact
+    DataIngestionArtifact , DataValidationArtifact , DataTransformationArtifact , ModelTrainerArtifact , ModelEvaluationArtifact , ModelPusherArtifact
 )
  
 
@@ -21,7 +21,8 @@ from wineQuality.components.data_ingestion import DataIngestion
 from wineQuality.components.data_validation import DataValidation
 from wineQuality.components.data_transformation import DataTransformation
 from wineQuality.components.model_trainer import ModelTrainer
-
+from wineQuality.components.model_evaluation import ModelEvaluation
+from wineQuality.components.model_pusher import ModelPusher
 
 class TrainingPipeline:
     def __init__(self):
@@ -40,6 +41,11 @@ class TrainingPipeline:
         # 4. do the model training
         self.model_trainer_config = ModelTrainerConfig()
         
+        # 5. do the model evaluation
+        self.model_evaluation_config = ModelEvaluationConfig()
+        
+        # 6. do the model push in production
+        self.model_pusher_config = ModelPusherConfig()
     
     def start_data_ingestion(self) -> DataIngestionArtifact:
         """ 
@@ -113,12 +119,50 @@ class TrainingPipeline:
                 data_transformation_artifact = data_transformation_artifact
             ) 
             
-            model_trainer_artifact = model_trainer.initiate_model_trainer()
-            return model_trainer_artifact
+            model_trainer_artifact , wineQualityEstimator = model_trainer.initiate_model_trainer()
+            return model_trainer_artifact , wineQualityEstimator
         
         except Exception as e:
             raise WineException(e , sys)
+    
+    
+    def start_model_evaluation(self , data_transformation_artifact: DataTransformationArtifact , model_trainer_artifact: ModelTrainerArtifact):
+        """ 
+        This method of TrainingPipeline class is responsible for starting model evaluation
+        """
+        try:
+            logging.info("Entered into start_model_evaluation from training pipeline")
+            
+            model_evaluation = ModelEvaluation(
+                model_evaluation_config = self.model_evaluation_config,
+                data_transformation_artifact = data_transformation_artifact,
+                model_trainer_artifact = model_trainer_artifact
+            )
+            
+            model_evaluation_artifact = model_evaluation.initiate_model_evaluation()
+            return model_evaluation_artifact
+            
+        except Exception as e:
+            raise WineException(e , sys)
+    
+    def start_model_push(self , model_evaluation_artifact: ModelEvaluationArtifact, data_transformation_artifact: DataTransformationArtifact) -> ModelPusherArtifact:
         
+        """This method of TrainingPipeline class is responsible for pushing the model on production
+        """
+        
+        try:
+            logging.info("Entered into start_model_push from training pipeline")  
+           
+            model_pusher = ModelPusher(
+               model_pusher_config = self.model_pusher_config,
+               model_evaluation_artifact = model_evaluation_artifact,
+               data_transformation_artifact = data_transformation_artifact
+            )
+            model_pusher_artifact = model_pusher.initiate_model_pusher()
+            return model_pusher_artifact
+        except Exception as e:
+            raise WineException(e , sys)
+    
     def run_training_pipeline(self , ) -> None:
         """ 
         This method of TrainingPipeline class is responsible for running complete training pipeline
@@ -138,8 +182,20 @@ class TrainingPipeline:
            logging.info("Data transformation is Done!!")
            
            # 4. Run the model trainer
-           model_trainer_artifact = self.start_model_trainer(data_transformation_artifact = data_transformation_artifact)
+           model_trainer_artifact , current_trained_model = self.start_model_trainer(data_transformation_artifact = data_transformation_artifact)
            logging.info("Model Trainer Completed")
+           
+           # 5. Run the model evaluation
+           model_evaluation_artifact = self.start_model_evaluation(data_transformation_artifact = data_transformation_artifact , model_trainer_artifact = model_trainer_artifact)
+           logging.info("Model evaluation completed")
+           
+           # 6. Run the model pusher
+           model_pusher_artifact = self.start_model_push(
+               model_evaluation_artifact = model_evaluation_artifact,
+               data_transformation_artifact = data_transformation_artifact
+           )
+           logging.info("Model push completed")
+           print(model_pusher_artifact.is_model_pushed)
            
         except Exception as e:
             raise WineException(e , sys)    

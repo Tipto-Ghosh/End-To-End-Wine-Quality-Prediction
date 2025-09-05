@@ -34,3 +34,15 @@ class ModelTrainerArtifact:
     trained_model_file_path : str 
     metric_artifact : ClassificationMetricArtifact
     tuned_model_report_file_path : str
+
+@dataclass
+class ModelEvaluationArtifact:
+    is_model_accepted : bool 
+    improved_accuracy : float
+    best_model_path : str
+
+@dataclass
+class ModelPusherArtifact:
+    is_model_pushed: bool
+    production_model_path: str
+    production_preprocessor_path: str
