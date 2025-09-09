@@ -187,5 +187,4 @@ This project is licensed under the MIT License.
 
 ## 📫 Contact
 - Created by [TiptoGhosh](https://www.linkedin.com/in/tipto-ghosh-4b0aab283/) – feel free to connect via Linkedin.
-- Also you can mail me on this address: [tipto_ghosh](tiptoghosh@gmail.com)
-
+- You can also mail me [here](mailto:tiptoghosh@gmail.com)
