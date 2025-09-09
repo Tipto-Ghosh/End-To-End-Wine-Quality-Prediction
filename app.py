@@ -7,6 +7,7 @@ from wineQuality.utils.main_utils import load_object
 # --- Set wide layout to fit all columns ---
 st.set_page_config(layout="wide")
 st.title("Wine Quality Prediction 🍷")
+st.subheader("Author: Tipto Ghosh")
 st.write("Enter wine features to predict whether it's Standard or Premium")
 
 # --- Wine type ---
